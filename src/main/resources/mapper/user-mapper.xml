@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.community.dao.UserMapper">
+
+    <sql id="insertFields">
+        username, password, salt, email, type, status, activation_code, header_url, create_time
+    </sql>
+
+    <sql id="selectFields">
+        id, username, password, salt, email, type, status, activation_code, header_url, create_time
+    </sql>
+
+    <select id="selectById" resultType="User">
+        select <include refid="selectFields"></include>
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" resultType="User">
+        select <include refid="selectFields"></include>
+        from user
+        where username = #{username}
+    </select>
+
+    <select id="selectByEmail" resultType="User">
+        select <include refid="selectFields"></include>
+        from user
+        where email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        insert into user (<include refid="insertFields"></include>)
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+    </insert>
+
+    <update id="updateStatus">
+        update user set status = #{arg1} where id = #{arg0}
+    </update>
+
+    <update id="updateHeader">
+        update user set header_url = #{arg1} where id = #{arg0}
+    </update>
+
+    <update id="updatePassword">
+        update user set password = #{arg1} where id = #{arg0}
+    </update>
+
+</mapper>
+
+<!--一些注解-->
+<!--来自https://mybatis.org/mybatis-3/zh/getting-started.html-->
+<!--<sql id="insertFields"> 查询的字段-->
+<!-- #{id}引用方法的参数id -->
+<!--<select id="selectById" resultType="User">说明这个标签是为selectById服务的-->
+<!--namespace体现的是这个xml文件为哪个mapper服务的-->
